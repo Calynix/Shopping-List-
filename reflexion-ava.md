@@ -1,0 +1,3 @@
+Die Arbeit mit der Pipeline und den Tests war ein wenig schwierig, da wir einige Errors mit den Tests hatten. Jedoch ging die andere Arbeit sehr gut und die Teamarbeit auch da wir uns sehr gut kennen und aufteilen konnten.
+
+Die Praktische Prüfung war eine sehr neue Wahl und hat uns zuerst etwas verwirrt also eine genauere Beschreibung wäre gut. Die KI wurde nur für z.B. fehler Suche verwendet, da wir die Einrückungen bei yml nicht ganz so einfach lesen konten. Die Nutzung war sehr sinnvoll meiner Meinung nach da wir sonst sehr viel zeit verbraucht hätten um diesen zu beheben. Die Base Pipeline wurde von uns selber geschrieben und auch die Folgenden Jobs. Auf jeden Fall die fehler Sucher nachher bei den Dependencys da dort "Finde den Fehler" nicht ganz so hilfreich ist.
