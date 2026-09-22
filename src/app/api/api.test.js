@@ -8,7 +8,7 @@ import { POST as join } from './join/route';
 import { POST as addItem } from './addItem/route';
 import { shoppingLists } from './data';
 
-function jsonRequest(body: object) {
+function jsonRequest(body) {
   return new Request('http://localhost/api', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -29,6 +29,7 @@ describe('shopping list API', () => {
 
     expect(response.status).toBe(200);
     expect(data.code).toHaveLength(6);
+
     expect(shoppingLists[data.code]).toEqual({
       items: [],
       members: [],
@@ -36,32 +37,43 @@ describe('shopping list API', () => {
   });
 
   test('joins an existing list', async () => {
-    shoppingLists.ABC123 = { items: [], members: [] };
+    shoppingLists.ABC123 = {
+      items: [],
+      members: [],
+    };
 
     const response = await join(
       jsonRequest({
         code: 'ABC123',
         memberName: 'Alex',
-      }),
+      })
     );
 
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ success: true });
+    expect(await response.json()).toEqual({
+      success: true,
+    });
+
     expect(shoppingLists.ABC123.members).toEqual(['Alex']);
   });
 
   test('adds an item to an existing list', async () => {
-    shoppingLists.ABC123 = { items: [], members: [] };
+    shoppingLists.ABC123 = {
+      items: [],
+      members: [],
+    };
 
     const response = await addItem(
       jsonRequest({
         code: 'ABC123',
         itemName: 'Milk',
-      }),
+      })
     );
 
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ success: true });
+    expect(await response.json()).toEqual({
+      success: true,
+    });
 
     expect(shoppingLists.ABC123.items).toEqual([
       expect.objectContaining({
@@ -77,7 +89,7 @@ describe('shopping list API', () => {
       jsonRequest({
         code: 'UNKNOWN',
         memberName: 'Alex',
-      }),
+      })
     );
 
     expect(response.status).toBe(404);
@@ -91,16 +103,20 @@ describe('Header', () => {
   test('renders the navigation links', () => {
     render(<Header />);
 
-    expect(screen.getByRole('link', { name: 'Einkaufsliste App' }))
-      .toHaveAttribute('href', '/');
+    expect(
+      screen.getByRole('link', { name: 'Einkaufsliste App' })
+    ).toHaveAttribute('href', '/');
 
-    expect(screen.getByRole('link', { name: 'Neue Liste erstellen' }))
-      .toHaveAttribute('href', '/register');
+    expect(
+      screen.getByRole('link', { name: 'Neue Liste erstellen' })
+    ).toHaveAttribute('href', '/register');
 
-    expect(screen.getByRole('link', { name: 'Liste beitreten' }))
-      .toHaveAttribute('href', '/join');
+    expect(
+      screen.getByRole('link', { name: 'Liste beitreten' })
+    ).toHaveAttribute('href', '/join');
 
-    expect(screen.getByRole('link', { name: 'Einkaufsliste anzeigen' }))
-      .toHaveAttribute('href', '/list');
+    expect(
+      screen.getByRole('link', { name: 'Einkaufsliste anzeigen' })
+    ).toHaveAttribute('href', '/list');
   });
 });
