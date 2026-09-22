@@ -1,13 +1,18 @@
+import { render, screen } from '@testing-library/react';
+import { describe, expect, test, beforeEach } from 'vitest';
+
+import Header from '@/components/Header/Header';
+
 import { POST as register } from './register/route';
 import { POST as join } from './join/route';
 import { POST as addItem } from './addItem/route';
 import { shoppingLists } from './data';
 
-function jsonRequest(body) {
+function jsonRequest(body: object) {
   return new Request('http://localhost/api', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   });
 }
 
@@ -24,13 +29,21 @@ describe('shopping list API', () => {
 
     expect(response.status).toBe(200);
     expect(data.code).toHaveLength(6);
-    expect(shoppingLists[data.code]).toEqual({ items: [], members: [] });
+    expect(shoppingLists[data.code]).toEqual({
+      items: [],
+      members: [],
+    });
   });
 
   test('joins an existing list', async () => {
     shoppingLists.ABC123 = { items: [], members: [] };
 
-    const response = await join(jsonRequest({ code: 'ABC123', memberName: 'Alex' }));
+    const response = await join(
+      jsonRequest({
+        code: 'ABC123',
+        memberName: 'Alex',
+      }),
+    );
 
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ success: true });
@@ -40,23 +53,54 @@ describe('shopping list API', () => {
   test('adds an item to an existing list', async () => {
     shoppingLists.ABC123 = { items: [], members: [] };
 
-    const response = await addItem(jsonRequest({ code: 'ABC123', itemName: 'Milk' }));
+    const response = await addItem(
+      jsonRequest({
+        code: 'ABC123',
+        itemName: 'Milk',
+      }),
+    );
 
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ success: true });
+
     expect(shoppingLists.ABC123.items).toEqual([
       expect.objectContaining({
         name: 'Milk',
         reservedBy: null,
-        completed: false
-      })
+        completed: false,
+      }),
     ]);
   });
 
   test('returns not found for an unknown list', async () => {
-    const response = await join(jsonRequest({ code: 'UNKNOWN', memberName: 'Alex' }));
+    const response = await join(
+      jsonRequest({
+        code: 'UNKNOWN',
+        memberName: 'Alex',
+      }),
+    );
 
     expect(response.status).toBe(404);
-    expect(await response.json()).toEqual({ error: 'List not found' });
+    expect(await response.json()).toEqual({
+      error: 'List not found',
+    });
+  });
+});
+
+describe('Header', () => {
+  test('renders the navigation links', () => {
+    render(<Header />);
+
+    expect(screen.getByRole('link', { name: 'Einkaufsliste App' }))
+      .toHaveAttribute('href', '/');
+
+    expect(screen.getByRole('link', { name: 'Neue Liste erstellen' }))
+      .toHaveAttribute('href', '/register');
+
+    expect(screen.getByRole('link', { name: 'Liste beitreten' }))
+      .toHaveAttribute('href', '/join');
+
+    expect(screen.getByRole('link', { name: 'Einkaufsliste anzeigen' }))
+      .toHaveAttribute('href', '/list');
   });
 });
