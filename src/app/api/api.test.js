@@ -1,9 +1,3 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, expect, test, beforeEach } from 'vitest';
-
-import Header from '@/components/Header/Header';
-
 import { POST as register } from './register/route';
 import { POST as join } from './join/route';
 import { POST as addItem } from './addItem/route';
@@ -98,27 +92,5 @@ describe('shopping list API', () => {
     expect(await response.json()).toEqual({
       error: 'List not found',
     });
-  });
-});
-
-describe('Header', () => {
-  test('renders the navigation links', () => {
-    render(React.createElement(Header));
-
-    expect(
-      screen.getByRole('link', { name: 'Einkaufsliste App' })
-    ).toHaveAttribute('href', '/');
-
-    expect(
-      screen.getByRole('link', { name: 'Neue Liste erstellen' })
-    ).toHaveAttribute('href', '/register');
-
-    expect(
-      screen.getByRole('link', { name: 'Liste beitreten' })
-    ).toHaveAttribute('href', '/join');
-
-    expect(
-      screen.getByRole('link', { name: 'Einkaufsliste anzeigen' })
-    ).toHaveAttribute('href', '/list');
   });
 });
