@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, test, beforeEach } from 'vitest';
 
@@ -93,6 +94,7 @@ describe('shopping list API', () => {
     );
 
     expect(response.status).toBe(404);
+
     expect(await response.json()).toEqual({
       error: 'List not found',
     });
@@ -101,7 +103,7 @@ describe('shopping list API', () => {
 
 describe('Header', () => {
   test('renders the navigation links', () => {
-    render(<Header />);
+    render(React.createElement(Header));
 
     expect(
       screen.getByRole('link', { name: 'Einkaufsliste App' })
