@@ -22,3 +22,10 @@ Getestet ob alles läuft, auch mit Echo
 Failed falls tests nicht vorhanden
 
 ![alt text](image-4.png)
+
+
+## Aufgabe 3
+
+Tests und Linter sind beide am Laufen sowie ein simulierter Deploy Job. (siehe bild unten)
+
+![](image-5.png)
